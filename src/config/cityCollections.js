@@ -1,12 +1,8 @@
-require("./db");
-const City = require("../models/City");
+const mongoose = require("mongoose");
+require('./db') 
+
 const cities = [
-  {
-    name: "Wakatobi",
-    country: "Indonesia",
-    image:
-      "https://media.cnn.com/api/v1/images/stellar/prod/170407220916-04-iconic-mountains-matterhorn-restricted.jpg?q=w_2512,h_1413,x_0,y_0,c_fill/w_1280",
-  },
+  
   {
     name: "Neo Tokyo",
     country: "Japan",
@@ -69,4 +65,15 @@ const cities = [
   },
 ];
 
-City.insertMany(cities);
+const insertCities = async (req, res) => {
+  try {
+    
+    await City.insertMany(cities);
+
+    res.status(200).json({ message: "Collection has been added" });
+  } catch (e) {
+    res.status(400).json({ message: e.message });
+  }
+};
+
+module.exports = insertCities;
