@@ -14,6 +14,8 @@ router.get("/cities", getCities);
 router.post("/city", validateCityData, addCity);
 
 router.put("/city/:id", updateCity);
+
+
 router.delete("/city/:id", deleteCity);
 
 module.exports = router;

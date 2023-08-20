@@ -87,31 +87,7 @@ const updateCity = async (req, res) => {
   }
 };
 
-const updateCityImage = async (req, res) => {
-  /* 
-  Cree este controlador ya que no tenia tiempo de buscar las urls de las fotos
-    y las cargare mas adelante 
-  */
-  const { id } = req.params;
-  const { image } = req.body;
-  try {
-    const updatedCity = await City.findByIdAndUpdate(
-      id,
-      { image },
-      { new: true }
-    );
 
-    if (!updatedCity) {
-      return res.status(404).json({ message: "City not found" });
-    }
-
-    res
-      .status(200)
-      .json({ message: "City image updated", updatedCity: updatedCity });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 module.exports = {
   getCities,
@@ -119,5 +95,4 @@ module.exports = {
   addCity,
   deleteCity,
   updateCity,
-  updateCityImage,
 };
