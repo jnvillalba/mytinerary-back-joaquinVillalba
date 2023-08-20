@@ -4,10 +4,23 @@ const City = require("../models/City");
 const getCities = async (req, res) => {
   try {
     let cities = await City.find();
-    res.json({ cities });
+    const searchText = req.query.search || "";
+    const filteredCities = filterCities(cities, searchText);
+
+    res.json({ cities: filteredCities });
   } catch (error) {
     res.json({ message: error.message });
   }
+};
+
+const filterCities = (cities, searchText) => {
+  searchText = searchText.trim().toLowerCase();
+  const filteredCities = cities.filter((city) => {
+    const cityName = city.name.toLowerCase();
+    return cityName.startsWith(searchText);
+  });
+
+  return filteredCities;
 };
 
 const addCity = async (req, res) => {
@@ -20,8 +33,7 @@ const addCity = async (req, res) => {
       message: "City added",
       createdCity: createdCity,
     });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
@@ -36,13 +48,10 @@ const deleteCity = async (req, res) => {
     }
 
     res.status(200).json({ message: "City deleted", deletedCity: deletedCity });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
-
 
 const getCityById = async (req, res) => {
   const { id } = req.params;
@@ -54,8 +63,7 @@ const getCityById = async (req, res) => {
     }
 
     res.status(200).json({ city });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
@@ -65,7 +73,9 @@ const updateCity = async (req, res) => {
   const updatedData = req.body;
 
   try {
-    const updatedCity = await City.findByIdAndUpdate(id, updatedData, { new: true });
+    const updatedCity = await City.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
 
     if (!updatedCity) {
       return res.status(404).json({ message: "City not found" });
@@ -85,18 +95,23 @@ const updateCityImage = async (req, res) => {
   const { id } = req.params;
   const { image } = req.body;
   try {
-    const updatedCity = await City.findByIdAndUpdate(id, { image }, { new: true });
+    const updatedCity = await City.findByIdAndUpdate(
+      id,
+      { image },
+      { new: true }
+    );
 
     if (!updatedCity) {
       return res.status(404).json({ message: "City not found" });
     }
 
-    res.status(200).json({ message: "City image updated", updatedCity: updatedCity });
+    res
+      .status(200)
+      .json({ message: "City image updated", updatedCity: updatedCity });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = {
   getCities,
@@ -104,5 +119,5 @@ module.exports = {
   addCity,
   deleteCity,
   updateCity,
-  updateCityImage
+  updateCityImage,
 };
