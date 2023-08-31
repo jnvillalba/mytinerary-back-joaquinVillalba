@@ -56,7 +56,7 @@ const deleteItinerary = async (req, res) => {
 const getItineraryById = async (req, res) => {
   const { id } = req.params;
   try {
-    const itinerary = await itinerary.findById(id);
+    const itinerary = await Itinerary.findById(id);
 
     if (!itinerary) {
       return res.status(404).json({ message: "itinerary not found" });

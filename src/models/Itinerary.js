@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model,Types } = require("mongoose");
 
 const schemaitinerary = new Schema({
   name: {
@@ -11,12 +11,12 @@ const schemaitinerary = new Schema({
     required: false,
   },
   user: {
-    type: mongoose.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "User",
     required: true,
   },
   city: {
-    type: mongoose.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "City",
     required: true,
   },
