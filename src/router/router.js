@@ -40,7 +40,7 @@ router.delete("/city/:id", deleteCity);
 
 router.get("/itinerary/:id", getItineraryById);
 router.get("/itineraries/:cityId", getItinerariesByCity);
-router.get("/itinerary", getItineraries);
+router.get("/itineraries", getItineraries);
 router.post("/itinerary", validateItineraryData, addItinerary);
 router.put("/itinerary/:id", updateItinerary);
 router.delete("/itinerary/:id", deleteItinerary);
