@@ -1,11 +1,13 @@
 const { Schema, model,Types } = require("mongoose");
+const commentSchema = require("./Comment");
 
-const schemaitinerary = new Schema({
+const activitySchema = require("./Activity"); 
+
+const schemaItinerary = new Schema({
   name: {
     type: String,
     required: true,
   },
-
   image: {
     type: String,
     required: false,
@@ -38,8 +40,16 @@ const schemaitinerary = new Schema({
     type: [String],
     required: true,
   },
+  comments: {
+    type: [Types.commentSchema],
+    required: false,
+  },
+  activities: {
+    type: [Types.activitySchema],
+    required: false,
+  },
 });
 
-const Itinerary = model("Itinerary", schemaitinerary);
+const Itinerary = model("Itinerary", schemaItinerary);
 
 module.exports = Itinerary;
