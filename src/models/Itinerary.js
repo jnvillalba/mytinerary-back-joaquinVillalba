@@ -40,14 +40,14 @@ const schemaItinerary = new Schema({
     type: [String],
     required: true,
   },
-  comments: {
-    type: [Types.commentSchema],
-    required: false,
-  },
-  activities: {
-    type: [Types.activitySchema],
-    required: false,
-  },
+  comments: [{
+    type: Types.ObjectId,
+    ref: "Comment",
+  }],
+  activities: [{
+    type: Types.ObjectId,
+    ref: "Activity",
+  }],
 });
 
 const Itinerary = model("Itinerary", schemaItinerary);
