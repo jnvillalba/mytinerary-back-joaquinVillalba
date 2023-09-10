@@ -4,12 +4,27 @@ const schemaUser = new Schema({
         type: String,
         required: true,
     },
+    apellido: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
     photo: {
         type: String,
         required: false,
         
     },
-    
+    country: {
+        type: String,
+        required: true,
+    },
 })
 
 const User = model(
