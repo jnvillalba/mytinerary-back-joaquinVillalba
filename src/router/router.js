@@ -21,12 +21,13 @@ const {
   addUser,
   deleteUser,
   updateUser,
-} = require("../controllers/UserController");
+} = require("../controllers/userController");
 
 const {
   validateCityData,
   validateItineraryData,
 } = require("../middlewares/verfications");
+const authRouter = require("./authRouter");
 
 
 //City
@@ -51,4 +52,8 @@ router.get('/users/:id', getUserById);
 router.post('/users', addUser);
 router.delete('/users/:id', deleteUser);
 router.put('/users/:id',updateUser);
+
+router.use("/users", authRouter);
+
+
 module.exports = router;

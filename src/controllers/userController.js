@@ -72,10 +72,34 @@ const updateUser = async (req, res) => {
   }
 };
 
+const registerUser = async (req, res) => {
+  try{
+    const payload = req.body;
+    const userExists = await User.findOne({ email: payload.email });
+
+      if (userExists) {
+        return res.status(403).json({ message: "User already exists" });
+      }
+
+      const userCreated = await User.create(payload);
+
+    console.log( "User created: ", userCreated)
+
+    res.status(200).json({
+      message: "User created",
+      userCreated
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+
 module.exports = {
   getUsers,
   getUserById,
   addUser,
   deleteUser,
   updateUser,
+  registerUser,
 };
