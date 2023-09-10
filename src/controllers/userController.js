@@ -97,19 +97,14 @@ const registerUser = async (req, res) => {
 
 const authUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    const userFound = await User.findOne({ email: email });
-
-    if (userFound) {
-      if (verifyPassword(password, userFound.password)) {
-        res.status(200).json({ message: "User authenticated" });
-      } else {
-        res.status(400).json({ message: "Invalid password" });
-      }
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    res.status(200).json({
+      message: "User authenticated",
+      token: req.token,
+      user: {
+        email: req.user.email,
+        _id: req.user._id,
+      },
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
