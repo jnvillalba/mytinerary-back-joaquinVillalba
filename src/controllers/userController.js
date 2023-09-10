@@ -1,3 +1,4 @@
+const { verifyPassword } = require("../middlewares/auth");
 const User = require("../models/User");
 const getUsers = async (req, res) => {
   try {
@@ -73,27 +74,46 @@ const updateUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  try{
+  try {
     const payload = req.body;
     const userExists = await User.findOne({ email: payload.email });
 
-      if (userExists) {
-        return res.status(403).json({ message: "User already exists" });
-      }
+    if (userExists) {
+      return res.status(403).json({ message: "User already exists" });
+    }
 
-      const userCreated = await User.create(payload);
+    const userCreated = await User.create(payload);
 
-    console.log( "User created: ", userCreated)
+    console.log("User created: ", userCreated);
 
     res.status(200).json({
       message: "User created",
-      userCreated
-    })
+      userCreated,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-}
+};
 
+const authUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const userFound = await User.findOne({ email: email });
+
+    if (userFound) {
+      if (verifyPassword(password, userFound.password)) {
+        res.status(200).json({ message: "User authenticated" });
+      } else {
+        res.status(400).json({ message: "Invalid password" });
+      }
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 module.exports = {
   getUsers,
@@ -102,4 +122,5 @@ module.exports = {
   deleteUser,
   updateUser,
   registerUser,
+  authUser,
 };
