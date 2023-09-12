@@ -2,7 +2,8 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
+const passport = require("passport");
+const { Strategy, ExtractJwt } = require("passport-jwt");
 const userSchema = Joi.object({
   name: Joi.string().required().min(2).max(50).messages({
     "string.base": "Name must be a string",
@@ -37,9 +38,7 @@ const userSchema = Joi.object({
   }),
 });
 
-
 const userAuthSchema = Joi.object({
-  
   email: Joi.string().email().required().messages({
     "string.base": "Email must be a valid string",
     "string.empty": "Email is required",
@@ -128,11 +127,35 @@ const generateToken = (req, res, next) => {
   }
 };
 
+const passportVerify = passport.use(
+  new Strategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: "secret",
+    },
+    async (payload, done) => {
+      try {
+        let userFound = await User.findOne({ email: payload.email });
+
+        if (userFound) {
+          return done(null, userFound);
+        } else {
+          return done(null, false, { message: "User not found" });
+        }
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+
 module.exports = {
   verifyRegisterData,
   hashPassword,
   verifyPassword,
   verifyUserExists,
   generateToken,
-  verifyAuthData
+  verifyAuthData,
+  passportVerify,
 };

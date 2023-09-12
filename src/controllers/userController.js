@@ -102,12 +102,22 @@ const authUser = async (req, res) => {
       token: req.token,
       user: {
         email: req.user.email,
+        photo: req.user.photo,
         _id: req.user._id,
       },
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+};
+
+const logout = (req, res) => {
+  try {
+    res.status(200).json({
+      message: "User logged out",
+      token: req.token,
+    });
+  } catch (error) {  res.status(400).json({ message: error.message });}
 };
 
 module.exports = {
@@ -118,4 +128,5 @@ module.exports = {
   updateUser,
   registerUser,
   authUser,
+  logout,
 };

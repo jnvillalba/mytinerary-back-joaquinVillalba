@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, authUser } = require("../controllers/userController");
+const { registerUser, authUser,logout } = require("../controllers/userController");
 const {
   verifyRegisterData,
   verifyAuthData,
@@ -7,6 +7,8 @@ const {
   verifyPassword,
   verifyUserExists,
   generateToken,
+  passportVerify,
+
 } = require("../middlewares/auth");
 
 const authRouter = express.Router();
@@ -20,5 +22,13 @@ authRouter.post(
   generateToken,
   authUser
 );
+authRouter.post(
+  "/authenticated",
+  passportVerify.authenticate("jwt",{session:false}),
+  generateToken,
+  authUser,
+);
+
+authRouter.post("/logout", passportVerify.authenticate("jwt",{session:false}),logout );
 
 module.exports = authRouter;
