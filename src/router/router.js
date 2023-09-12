@@ -47,12 +47,13 @@ router.put("/itinerary/:id", updateItinerary);
 router.delete("/itinerary/:id", deleteItinerary);
 
 //User
+/*
 router.get('/users', getUsers);
 router.get('/users/:id', getUserById);
 router.post('/users', addUser);
 router.delete('/users/:id', deleteUser);
 router.put('/users/:id',updateUser);
-
+*/
 router.use("/users", authRouter);
 
 
