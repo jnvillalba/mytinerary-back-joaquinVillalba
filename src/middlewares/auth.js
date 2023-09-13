@@ -22,19 +22,17 @@ const userSchema = Joi.object({
     "string.empty": "Email is required",
     "string.email": "Email must be a valid email address",
   }),
-  password: Joi.string().alphanum().min(8).required().messages({
+  password: Joi.string().min(8).required().messages({
     "string.base": "Password must be a valid string",
     "string.empty": "Password is required",
-    "string.alphanum": "Password must only contain alphanumeric characters",
     "string.min": "Password should have at least {#limit} characters",
   }),
   photo: Joi.string().required().messages({
     "string.base": "Photo must be a string",
     "string.empty": "Photo is required",
   }),
-  country: Joi.string().required().messages({
+  country: Joi.string().messages({
     "string.base": "Country must be a string",
-    "string.empty": "Country is required",
   }),
 });
 
@@ -44,10 +42,9 @@ const userAuthSchema = Joi.object({
     "string.empty": "Email is required",
     "string.email": "Email must be a valid email address",
   }),
-  password: Joi.string().alphanum().min(8).required().messages({
+  password: Joi.string().min(8).required().messages({
     "string.base": "Password must be a valid string",
     "string.empty": "Password is required",
-    "string.alphanum": "Password must only contain alphanumeric characters",
     "string.min": "Password should have at least {#limit} characters",
   }),
 });
